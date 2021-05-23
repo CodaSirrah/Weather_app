@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>weather_app</title>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,minimum-scale=1,initial-scale=1"
+    />
+    <script
+      src="https://kit.fontawesome.com/aecb58e81f.js"
+      crossorigin="anonymous"
+    ></script>
+    <link href="https://fonts.googleapis.com/css2?family=Trispace:wght@100&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@200&display=swap" rel="stylesheet">
+  </head>
+  <body>
+
+    <header>
+      <h1 id="title" class="hidden visually-hidden">Weather App</h1>
+    </header>
+
+    
+
+    <main id="weather-container" class="hidden visually-hidden">
+      <section id="place-container"></section>
+      <section id="temp-container">
+        <table>
+          <tr>
+            <th>Temperature</th>
+            <th>Feels Like</th>
+            <th>Humidity</th>
+            <th>Wind Speed</th>
+          </tr>
+          <tr id="weather-data">
+          </tr>
+        </table>
+      </section>
+    </main>
+
+    <section id="search-container" class="hidden visually-hidden">
+      <form action="" classs="input-icons">
+        <div class="input-icons">
+          <i class="fas fa-search"></i>
+          <input type="text" name="location" id="location" class="input-field" autocomplete="off" placeholder="City:" />
+      </div>
+      </form>
+    </section>
+
+    <footer>
+      <p>This project Utilizes <a href="https://openweathermap.org/" target="blank"><strong>OpenWeather</strong></a>'s API.</p>
+      <p>Made by: <a href="https://github.com/CodaSirrah" target="_blank"><i class="fab fa-github" id="github-icon"></i></a></p>
+    </footer>
+    
+    <script src="main.js"></script>
+  </body>
+</html>
