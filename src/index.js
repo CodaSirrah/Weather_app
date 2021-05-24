@@ -95,5 +95,3 @@ SWITCH.addEventListener('click', () => {
     }
   }
 });
-
-location('London');

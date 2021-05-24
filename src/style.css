@@ -3,6 +3,7 @@ body {
   margin: 0;
   height: 100%;
   background-image: url('./images/universe-1566159_1920.jpg');
+  position: relative;
 }
 
 * {
