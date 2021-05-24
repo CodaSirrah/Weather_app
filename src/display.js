@@ -1,25 +1,20 @@
+/* eslint-disable radix */
 /* eslint-disable no-console */
 const DISPLAY = (target) => {
-  async function REMOVE_CHILDS() {
-    // Remove children to only show one result
-
-    const ARRAY = target.children;
-    try {
-      for (let i = ARRAY.length - 1; i >= 0; i -= 1) {
-        ARRAY[i].remove();
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  const WEATHER_DATA = (temp, feel, humidity, windSpeed) => {
+  const WEATHER_DATA = (temp, feel, humidity, windSpeed, farenheit) => {
     const TEMPERATURE = document.createElement('td');
-    TEMPERATURE.textContent = temp;
+    if (farenheit === true) {
+      TEMPERATURE.textContent = `${temp}℉`;
+    } else if (farenheit === false) {
+      TEMPERATURE.textContent = `${temp}℃`;
+    }
 
     const FEELSLIKE = document.createElement('td');
-    FEELSLIKE.textContent = feel;
-
+    if (farenheit === true) {
+      FEELSLIKE.textContent = `${feel}℉`;
+    } else if (farenheit === false) {
+      FEELSLIKE.textContent = `${feel}℃`;
+    }
     const HUMIDITY = document.createElement('td');
     HUMIDITY.textContent = humidity;
 
@@ -83,13 +78,13 @@ const DISPLAY = (target) => {
     const NEW_TITLE = target;
     switch (type) {
       case 'Rain':
-        NEW_TITLE.textContent = 'Looks like it\'s raining';
+        NEW_TITLE.textContent = 'Looks like it\'s raining.';
         break;
       case 'Clouds':
-        NEW_TITLE.textContent = 'Cloudy with a chance of meatballs!';
+        NEW_TITLE.textContent = 'Everything is white and puffy.';
         break;
       case 'Clear':
-        NEW_TITLE.textContent = 'It\'s a nice sunny day';
+        NEW_TITLE.textContent = 'It\'s a nice sunny day.';
         break;
       default:
         NEW_TITLE.textContent = '';
@@ -97,14 +92,99 @@ const DISPLAY = (target) => {
     return NEW_TITLE;
   };
 
+  const CHANGE_WEATHER_CONTAINER = (firstSearch) => {
+    DISPLAY(target).CREATE_PLACE_CONTAINER();
+    DISPLAY(target).CREATE_TEMP_CONTAINER();
+    if (firstSearch === true) {
+      DISPLAY(target).SHOW_AND_HIDE();
+    }
+  };
+
+  const CREATE_PLACE_CONTAINER = () => {
+    for (let i = 0; i < target.children.length; i += 1) {
+      if (target.children[i].id === 'place-container') {
+        target.children[i].remove();
+      }
+    }
+    const PLACE_CONTAINER = document.createElement('section');
+    PLACE_CONTAINER.setAttribute('id', 'place-container');
+    PLACE_CONTAINER.classList.add('hidden');
+    PLACE_CONTAINER.classList.add('visually-hidden');
+    target.appendChild(PLACE_CONTAINER);
+    DISPLAY(PLACE_CONTAINER).SHOW_AND_HIDE();
+  };
+
+  const CREATE_TEMP_CONTAINER = () => {
+    for (let i = 0; i < target.children.length; i += 1) {
+      if (target.children[i].id === 'temp-container') {
+        target.children[i].remove();
+      }
+    }
+    const TEMP_CONTAINER = document.createElement('section');
+    const TABLE = document.createElement('table');
+    const TR_HEADERS = document.createElement('tr');
+    const TH_TEMP = document.createElement('th');
+    const TH_FEEL = document.createElement('th');
+    const TH_HUMIDITY = document.createElement('th');
+    const TH_WIND = document.createElement('th');
+    const TR_WEATHER_DATA = document.createElement('tr');
+
+    TEMP_CONTAINER.setAttribute('id', 'temp-container');
+    TR_WEATHER_DATA.setAttribute('id', 'weather-data');
+
+    TH_TEMP.textContent = 'Temperature';
+    TH_FEEL.textContent = 'Feels Like';
+    TH_HUMIDITY.textContent = 'Humidity';
+    TH_WIND.textContent = 'Wind Speed';
+
+    TEMP_CONTAINER.classList.add('hidden');
+    TEMP_CONTAINER.classList.add('visually-hidden');
+
+    TR_HEADERS.appendChild(TH_TEMP);
+    TR_HEADERS.appendChild(TH_FEEL);
+    TR_HEADERS.appendChild(TH_HUMIDITY);
+    TR_HEADERS.appendChild(TH_WIND);
+    TABLE.appendChild(TR_HEADERS);
+    TABLE.appendChild(TR_WEATHER_DATA);
+    TEMP_CONTAINER.appendChild(TABLE);
+    target.appendChild(TEMP_CONTAINER);
+    DISPLAY(TEMP_CONTAINER).SHOW_AND_HIDE();
+  };
+
+  const CONVERT_TEMP = (farenheit) => {
+    let { temperature, feel } = target;
+    if (farenheit === true) {
+      temperature = parseFloat(temperature);
+      temperature = (temperature * (9 / 5)) + 32;
+      temperature = Math.round(temperature * 100) / 100;
+      temperature = temperature.toString();
+      feel = parseFloat(feel);
+      feel = (feel * (9 / 5)) + 32;
+      feel = Math.round(feel * 100) / 100;
+      feel = feel.toString();
+    } else {
+      temperature = parseFloat(temperature);
+      temperature = (temperature - 32) * (5 / 9);
+      temperature = Math.round(temperature * 100) / 100;
+      temperature = temperature.toString();
+      feel = parseFloat(feel);
+      feel = (feel - 32) * (5 / 9);
+      feel = Math.round(feel * 100) / 100;
+      feel = feel.toString();
+    }
+    return { temperature, feel };
+  };
   return {
-    REMOVE_CHILDS,
     WEATHER_DATA,
     WEATHER_LOCATION,
     WEATHER_ICON,
     SHOW_AND_HIDE,
     FLOAT_DOWN,
     CHANGE_MESSAGE,
+    CHANGE_WEATHER_CONTAINER,
+    CREATE_PLACE_CONTAINER,
+    CREATE_TEMP_CONTAINER,
+    CONVERT_TEMP,
   };
 };
 

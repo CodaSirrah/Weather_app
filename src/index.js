@@ -4,40 +4,47 @@ import './style.css';
 import DISPLAY from './display.js';
 
 // selectors
+const WEATHER_CONTAINER = document.querySelector('#weather-container');
 const LOCATION_INPUT = document.querySelector('#location');
-const PLACE_CONTAINER = document.querySelector('#place-container');
 const SEARCH_CONTAINER = document.querySelector('#search-container');
 const FORM = document.querySelector('form');
 const TITLE = document.querySelector('#title');
-const WEATHER_DATA = document.querySelector('#weather-data');
-const WEATHER_CONTAINER = document.querySelector('#weather-container');
+const SWITCH = document.querySelector('#checkbox');
 
 let weather = {};
 let firstSearch = true;
+let farenheit = false;
 
 async function storeWeather(data) {
   weather = {
     city: data.name,
     country: data.sys.country,
-    temperature: `${data.main.temp}°`,
-    feel: `${data.main.feels_like}°`,
+    temperature: data.main.temp,
+    feel: data.main.feels_like,
     humidity: `${data.main.humidity}%`,
     type: data.weather[0].main,
     wind: `${data.wind.speed}mph`,
   };
-  console.table(weather);
-  if (firstSearch === false) {
-    DISPLAY(PLACE_CONTAINER).REMOVE_CHILDS();
-    DISPLAY(WEATHER_DATA).REMOVE_CHILDS();
+  if (farenheit === true) {
+    const NEW_TEMP = DISPLAY(weather).CONVERT_TEMP(farenheit);
+    weather.temperature = NEW_TEMP.temperature;
+    weather.feel = NEW_TEMP.feel;
+  }
+  DISPLAY(WEATHER_CONTAINER).CHANGE_WEATHER_CONTAINER(firstSearch);
+  DISPLAY(document.querySelector('#place-container')).WEATHER_LOCATION(weather.city, weather.country);
+  DISPLAY(document.querySelector('#weather-data')).WEATHER_DATA(
+    weather.temperature, weather.feel, weather.humidity, weather.wind, farenheit,
+  );
+  DISPLAY(document.querySelector('#place-container')).WEATHER_ICON(weather.type);
+  DISPLAY(TITLE).CHANGE_MESSAGE(weather.type);
+
+  if (firstSearch === true) {
+    setTimeout(() => { DISPLAY(TITLE).SHOW_AND_HIDE(); }, 1);
+    setTimeout(() => { DISPLAY(TITLE).FLOAT_DOWN(); }, 0);
   }
 
-  DISPLAY(PLACE_CONTAINER).WEATHER_LOCATION(weather.city, weather.country);
-  DISPLAY(WEATHER_DATA).WEATHER_DATA(
-    weather.temperature, weather.feel, weather.humidity, weather.wind,
-  );
-  DISPLAY(PLACE_CONTAINER).WEATHER_ICON(weather.type);
-  DISPLAY(TITLE).CHANGE_MESSAGE(weather.type);
   firstSearch = false;
+  return weather;
 }
 
 async function location(city) {
@@ -66,9 +73,25 @@ FORM.addEventListener('keydown', (event) => {
   }
 });
 
-location('London');
-
-setTimeout(() => { DISPLAY(TITLE).SHOW_AND_HIDE(); }, 1);
-setTimeout(() => { DISPLAY(TITLE).FLOAT_DOWN(); }, 0);
 setTimeout(() => { DISPLAY(SEARCH_CONTAINER).SHOW_AND_HIDE(); }, 1);
-setTimeout(() => { DISPLAY(WEATHER_CONTAINER).SHOW_AND_HIDE(); }, 1);
+
+SWITCH.addEventListener('click', () => {
+  if (farenheit === false) {
+    farenheit = true;
+  } else {
+    farenheit = false;
+  }
+  const NEW_TEMP = DISPLAY(weather).CONVERT_TEMP(farenheit);
+
+  weather.temperature = NEW_TEMP.temperature;
+  weather.feel = NEW_TEMP.feel;
+  if (firstSearch === false) {
+    if (farenheit === true) {
+      document.querySelector('#weather-data').children[0].textContent = `${weather.temperature}℉`;
+      document.querySelector('#weather-data').children[1].textContent = `${weather.temperature}℉`;
+    } else if (farenheit === false) {
+      document.querySelector('#weather-data').children[0].textContent = `${weather.temperature}℃`;
+      document.querySelector('#weather-data').children[1].textContent = `${weather.temperature}℃`;
+    }
+  }
+});
