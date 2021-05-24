@@ -21,23 +21,16 @@
       <h1 id="title" class="hidden visually-hidden">Weather App</h1>
     </header>
 
+    <div id="switch-container">
+      <span id="switch-label">Convert ℉</span>
+      <label class="switch">
+        <input type="checkbox" id="checkbox">
+        <span class="slider round"></span>
+      </label>
+    </div>
     
 
-    <main id="weather-container" class="hidden visually-hidden">
-      <section id="place-container"></section>
-      <section id="temp-container">
-        <table>
-          <tr>
-            <th>Temperature</th>
-            <th>Feels Like</th>
-            <th>Humidity</th>
-            <th>Wind Speed</th>
-          </tr>
-          <tr id="weather-data">
-          </tr>
-        </table>
-      </section>
-    </main>
+    <main id="weather-container" class="hidden visually-hidden"></main>
 
     <section id="search-container" class="hidden visually-hidden">
       <form action="" classs="input-icons">
@@ -47,6 +40,7 @@
       </div>
       </form>
     </section>
+
 
     <footer>
       <p>This project Utilizes <a href="https://openweathermap.org/" target="blank"><strong>OpenWeather</strong></a>'s API.</p>
