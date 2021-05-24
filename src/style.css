@@ -42,6 +42,7 @@ h2 {
   font-size: 35px;
   margin-bottom: 20px;
   font-family: 'Newsreader';
+  color : #ff8a4f;
 }
 
 h3 {
@@ -69,7 +70,7 @@ main {
   border-radius: 1%;
   transition: all 1s linear;
   padding: 20px;
-  border: 2px solid black;
+  border: 1px solid #ff8a4f57;;
 }
 
 table {
@@ -87,14 +88,20 @@ table {
 th {
   font-size: 18px;
   padding: 20px;
+  font-family: 'Newsreader';
 }
 
 td {
   font-size: 15px;
+  font-weight: 600;
+  font-family: 'Newsreader';
+  
+  
 }
 
 #weather-type {
   font-size: 60px;
+  color: rgb(148, 148, 148);
 }
 
 #search-container {
@@ -137,12 +144,14 @@ input {
   width: 100%;
   padding: 10px;
   text-align: center;
+  color: #ff8a4f;
+  font-weight: 900;
 }
 
 
 footer {
-  position: fixed;
-  bottom: 0%;
+  position: absolute;
+  bottom: 0;
   height: 95px;
   width: 100%;
   background-color: rgb(69, 66, 75);
@@ -219,7 +228,7 @@ input:checked + .slider {
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #076ec2;
 }
 
 input:checked + .slider:before {
@@ -238,6 +247,7 @@ input:checked + .slider:before {
 #switch-label {
 align-self: center;
 margin: 0 5px;
+
 }
 
 .hidden {
