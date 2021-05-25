@@ -174,6 +174,10 @@ const DISPLAY = (target) => {
     }
     return { temperature, feel };
   };
+
+  const TOGGLE_LOCATION = () => {
+    target.classList.add('blue');
+  };
   return {
     WEATHER_DATA,
     WEATHER_LOCATION,
@@ -185,6 +189,7 @@ const DISPLAY = (target) => {
     CREATE_PLACE_CONTAINER,
     CREATE_TEMP_CONTAINER,
     CONVERT_TEMP,
+    TOGGLE_LOCATION,
   };
 };
 

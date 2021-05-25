@@ -92,6 +92,10 @@ async function location(city) {
     const JSON = await PLACE.json();
     storeWeather(JSON);
     COORDINATES.request = false;
+    if (GET_LOCATION.classList.contains('blue')) {
+      console.log('test');
+      GET_LOCATION.classList.toggle('blue');
+    }
   } catch (err) {
     console.log(err);
   }
@@ -109,6 +113,9 @@ FORM.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
     location(LOCATION_INPUT.value);
     LOCATION_INPUT.value = '';
+
+    // Removes keyboard focus from input.
+    // Element.blur();
   }
 });
 
@@ -139,5 +146,6 @@ GET_LOCATION.addEventListener('click', () => {
   if (COORDINATES.request === false) {
     getLocation();
     COORDINATES.request = true;
+    DISPLAY(GET_LOCATION).TOGGLE_LOCATION();
   }
 });
