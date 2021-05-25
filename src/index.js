@@ -10,12 +10,22 @@ const SEARCH_CONTAINER = document.querySelector('#search-container');
 const FORM = document.querySelector('form');
 const TITLE = document.querySelector('#title');
 const SWITCH = document.querySelector('#checkbox');
+const GET_LOCATION = document.querySelector('.fa-map-marker-alt');
 
 let weather = {};
 let firstSearch = true;
 let farenheit = false;
+const COORDINATES = {
+  request: false,
+  latitude: '',
+  longitude: '',
+};
 
-async function storeWeather(data) {
+function saveCity(city) {
+  localStorage.setItem('CITY', city);
+}
+
+function storeWeather(data) {
   weather = {
     city: data.name,
     country: data.sys.country,
@@ -25,6 +35,7 @@ async function storeWeather(data) {
     type: data.weather[0].main,
     wind: `${data.wind.speed}mph`,
   };
+  saveCity(weather.city);
   if (farenheit === true) {
     const NEW_TEMP = DISPLAY(weather).CONVERT_TEMP(farenheit);
     weather.temperature = NEW_TEMP.temperature;
@@ -47,19 +58,47 @@ async function storeWeather(data) {
   return weather;
 }
 
+async function locationSuccess(pos) {
+  const COORDS = pos.coords;
+  COORDINATES.latitude = COORDS.latitude;
+  COORDINATES.longitude = COORDS.longitude;
+  try {
+    const PLACE = await fetch(
+      `http://api.openweathermap.org/data/2.5/weather?lat=${COORDINATES.latitude}&lon=${COORDINATES.longitude}&units=metric&appid=4cb92c5e21465a098adfe5ac36998bda`,
+      {
+        mode: 'cors',
+      },
+    );
+    const JSON = await PLACE.json();
+    storeWeather(JSON);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function getLocation() {
+  const GEO = await navigator.geolocation;
+  GEO.getCurrentPosition(locationSuccess);
+}
+
 async function location(city) {
   try {
-    const place = await fetch(
+    const PLACE = await fetch(
       `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=4cb92c5e21465a098adfe5ac36998bda`,
       {
         mode: 'cors',
       },
     );
-    const json = await place.json();
-    storeWeather(json);
+    const JSON = await PLACE.json();
+    storeWeather(JSON);
+    COORDINATES.request = false;
   } catch (err) {
     console.log(err);
   }
+}
+
+if (localStorage.getItem('CITY')) {
+  window.onload = location(localStorage.getItem('CITY'));
 }
 
 FORM.addEventListener('submit', (e) => {
@@ -88,10 +127,17 @@ SWITCH.addEventListener('click', () => {
   if (firstSearch === false) {
     if (farenheit === true) {
       document.querySelector('#weather-data').children[0].textContent = `${weather.temperature}℉`;
-      document.querySelector('#weather-data').children[1].textContent = `${weather.temperature}℉`;
+      document.querySelector('#weather-data').children[1].textContent = `${weather.feel}℉`;
     } else if (farenheit === false) {
       document.querySelector('#weather-data').children[0].textContent = `${weather.temperature}℃`;
-      document.querySelector('#weather-data').children[1].textContent = `${weather.temperature}℃`;
+      document.querySelector('#weather-data').children[1].textContent = `${weather.feel}℃`;
     }
+  }
+});
+
+GET_LOCATION.addEventListener('click', () => {
+  if (COORDINATES.request === false) {
+    getLocation();
+    COORDINATES.request = true;
   }
 });
