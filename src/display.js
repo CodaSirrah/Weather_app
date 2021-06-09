@@ -45,10 +45,12 @@ const DISPLAY = (target) => {
     WEATHER_TYPE.classList.add('fas');
     if (type === 'Clear') {
       WEATHER_TYPE.classList.add('fa-sun');
-    } else if (type === 'Rain') {
+    } else if (type === 'Drizzle') {
       WEATHER_TYPE.classList.add('fa-cloud-rain');
     } else if (type === 'Clouds') {
       WEATHER_TYPE.classList.add('fa-cloud');
+    } else if (type === 'Rain') {
+      WEATHER_TYPE.classList.add('fa-cloud-showers-heavy');
     }
     target.appendChild(WEATHER_TYPE);
   };
@@ -85,6 +87,9 @@ const DISPLAY = (target) => {
         break;
       case 'Clear':
         NEW_TITLE.textContent = 'It\'s a nice sunny day.';
+        break;
+      case 'Drizzle':
+        NEW_TITLE.textContent = 'Pitter patter on the windowpane.';
         break;
       default:
         NEW_TITLE.textContent = '';

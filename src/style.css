@@ -2,7 +2,7 @@ html,
 body {
   margin: 0;
   height: 100%;
-  background-image: url('./images/universe-1566159_1920.jpg');
+  background-image: url('./images/413655.jpg');
   position: relative;
 }
 
@@ -91,7 +91,7 @@ main {
   left: 50%;
   top: 19%;
   transform: translateX(-50%);
-  background-color: #BCB9C155;
+  background-color: #3f3e41c4;
   border-radius: 1%;
   transition: all 1s linear;
   padding: 20px;
@@ -324,7 +324,7 @@ font-size: 16px;
 
   #get-location-container {
     top: auto;
-    left: 2.2%;
+    left: 0%;
     bottom: 111px;
   }
 
